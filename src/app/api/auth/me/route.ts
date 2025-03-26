@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/auth-utils';
+import { getDB } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
     // Get database connection
-    const db = process.env.DB;
-    if (!db) {
-      return NextResponse.json(
-        { message: 'Database connection error' },
-        { status: 500 }
-      );
-    }
+    const db = getDB();
 
     // Get current user
     const user = await getCurrentUser(db);

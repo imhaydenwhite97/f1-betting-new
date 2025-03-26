@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth/auth-utils';
+import { getDB } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,13 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get database connection
-    const db = process.env.DB;
-    if (!db) {
-      return NextResponse.json(
-        { message: 'Database connection error' },
-        { status: 500 }
-      );
-    }
+    const db = getDB();
 
     // Check if email already exists
     const existingUser = await db.prepare(
